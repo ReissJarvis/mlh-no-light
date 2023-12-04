@@ -54,18 +54,16 @@ class NoLightSinatra < Sinatra::Base
   # end
 
   post '/submit' do
-    authorize do
-      @submission = Submission.new(get_submit_params)
+    @submission = Submission.new(get_submit_params)
 
-      if @submission.already_exists?
-        erb :error, locals: {
-          title: "Error - Already Submitted",
-          message: "You have already submitted this code under your name (\"#{@submission.name}\")."
-        }
-      else
-        @submission.save
-        erb :submitted
-      end
+    if @submission.already_exists?
+      erb :error, locals: {
+        title: "Error - Already Submitted",
+        message: "You have already submitted this code under your name (\"#{@submission.name}\")."
+      }
+    else
+      @submission.save
+      erb :submitted
     end
   end
 
